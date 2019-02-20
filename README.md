@@ -1,11 +1,13 @@
 # client-server-fasthttp
 
 ### Getting started
-* git clone `<git's repo path>`
-* go get `<things your missing>`
-* navigate to the appropriate server/main.go || client/main.go and run the file
+* `git clone https://github.com/philaporter/client-server-fasthttp.git`
+* `go get -u github.com/valyala/fasthttp`
+* navigate to server and run main.go
+* navigate to client, double check the client/config.json to see if you want to change anything, then run main.go 
 * Have you ever noticed that on Masterchef, the judges increasingly describe the food as being sexy if it's presented by a pretty lady?
 
+### This is the 404 you'll see when you hit any of the unmapped routes in your browser
 ```    **   ****     ** 
    */*  *///**   */* 
   * /* /*  */*  * /* 
