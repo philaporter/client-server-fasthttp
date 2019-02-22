@@ -13,6 +13,19 @@ type ServerConfig struct {
 	Port int    `json:"port"`
 }
 
+type Route struct {
+	Path    string
+	Method  []byte
+	Handler func()
+}
+
+type Router struct {
+	Routes map[string]Route
+}
+
+// temp var for testing
+var MasterChef Router = Router{}
+
 func loadConfig() ServerConfig {
 	jsonFile, err := os.Open("server/config.json")
 	if err != nil {
@@ -28,9 +41,52 @@ func loadConfig() ServerConfig {
 	return serverConfig
 }
 
+func (r *Router) Router(path string, method []byte, handler func()) {
+	if r.Routes == nil {
+		r.Routes = make(map[string]Route)
+	}
+	r.Routes[path] = Route{
+		Path:    path,
+		Method:  method,
+		Handler: handler,
+	}
+}
+
+func (r *Router) RouterFromMap(routes map[string]Route) {
+	if routes == nil {
+		r.Routes = make(map[string]Route)
+	} else {
+		r.Routes = routes
+	}
+}
+
+func (r *Router) PrintRoutes() {
+	for k, v := range r.Routes {
+		fmt.Printf("%s:%v", k, v)
+	}
+}
+
+// temp for testing
+func setupRouter() {
+	routes := make(map[string]Route)
+	routes["/temp"] = Route{
+		Path:    "/temp",
+		Method:  []byte("GET"),
+		Handler: GetHandler,
+	}
+	MasterChef.RouterFromMap(routes)
+	MasterChef.PrintRoutes()
+}
+
+func GetHandler() {
+	fmt.Println("hey there, mr get")
+}
+
 func handler(ctx *fasthttp.RequestCtx) {
 	path := string(ctx.Path())
 	switch (path) {
+	case "/temp":
+		MasterChef.Routes["/temp"].Handler()
 	case "/test":
 		method := string(ctx.Method())
 		if method != "GET" && method != "DELETE" {
@@ -71,9 +127,14 @@ func handler(ctx *fasthttp.RequestCtx) {
 }
 
 func main() {
+	setupRouter()
+
+	// TODO: Make the fasthttp handler iterate through the Routes to see what handler to call instead of using a switch
+
 	jsonConfig := loadConfig()
 	fmt.Println("Starting server, listening on " + fmt.Sprintf("%s:%d", jsonConfig.Host, jsonConfig.Port))
 	err := fasthttp.ListenAndServe(fmt.Sprintf("%s:%d", jsonConfig.Host, jsonConfig.Port), handler)
+
 	if err != nil {
 		fmt.Print("The server is tired of serving. Exiting...")
 		os.Exit(1)
