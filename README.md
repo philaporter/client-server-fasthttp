@@ -1,4 +1,6 @@
 # client-server-fasthttp
+### I'm trying something new
+* I've created server/router/router.go and it wraps / extends the basic fasthttp server functionality
 
 ### Getting started
 * `git clone https://github.com/philaporter/client-server-fasthttp.git`
@@ -7,6 +9,7 @@
 * navigate to client, double check the client/config.json to see if you want to change anything, then run main.go 
 * Have you ever noticed that on Masterchef, the judges increasingly describe the food as being sexy if it's presented by a pretty lady?
 
+## Deprecated 
 ### This is the 404 you'll see when you hit any of the unmapped routes in your browser
 ```    **   ****     ** 
    */*  *///**   */* 
