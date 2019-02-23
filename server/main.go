@@ -69,7 +69,7 @@ func main() {
 	jsonConfig := loadConfig()
 	fmt.Println("Starting server, listening on " + fmt.Sprintf("%s:%d", jsonConfig.Host, jsonConfig.Port))
 
-	// Awesomeness. Did you look at my router/Router.go?
+	// Awesomeness. Did you look at my router/router.go?
 	err := router.ListenAndServe(fmt.Sprintf("%s:%d", jsonConfig.Host, jsonConfig.Port))
 
 	if err != nil {
